@@ -23,6 +23,18 @@ public class PersonController {
         return ResponseEntity.ok(personList);
     }
 
+    //getMapping with search
+    @GetMapping("/search")
+    public ResponseEntity<List<Person>> getPersonSearch(@RequestParam String substring) {
+        List<Person> searchResult = new ArrayList<>();
+        for (Person person : personList) {
+            if (person.getName().contains(substring)) {
+                searchResult.add(person);
+            }
+        }
+        return ResponseEntity.ok(searchResult);
+    }
+
     @PostMapping
     public ResponseEntity<String> addPerson(@RequestBody Person person) {
         personList.add(person);
@@ -58,10 +70,12 @@ public class PersonController {
         for (Person person : personList) {
             if (person.getId().equals(id)) {
                 personList.remove(person);
-                return ResponseEntity.ok(person.getName() + " with id " + id + " succesfully got deleted");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(person.getName() + " with id " + id + " succesfully got deleted");
+//                return ResponseEntity.noContent(person.getName() + " with id " + id + " succesfully got deleted");
             }
         }
         return ResponseEntity.notFound().build();
     }
+
 }
 
