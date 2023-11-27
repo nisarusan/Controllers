@@ -25,7 +25,6 @@ public class PersonController {
         return ResponseEntity.ok(person.getName() + " is succesfully added");
     }
 
-
     @PutMapping("/person/{id}")
     public ResponseEntity<String> updatePerson(@PathVariable Long id, @RequestBody Person updatedPerson) {
         for (int i = 0; i < personList.size(); i++) {
@@ -39,4 +38,17 @@ public class PersonController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    //Delete CRUD
+    @DeleteMapping("/person/{id}")
+    public ResponseEntity<String> deletePerson(@PathVariable Long id) {
+        for (Person person : personList) {
+            if (person.getId().equals(id)) {
+                personList.remove(person);
+                return ResponseEntity.ok("Person with " + id + " succesfully got deleted");
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
+
