@@ -18,8 +18,9 @@ public class Person {
     private String name;
     @Column
     private int age;
-    @Column
+    @Column(name = "dob")
     private LocalDate dob;
+    @Column
     private char gender;
 
 
@@ -81,10 +82,5 @@ public class Person {
     //setGender
     public void setGender(char gender) {
         this.gender = gender;
-    }
-
-    //setId
-    public void setId(Long id) {
-        this.id = id;
     }
 }
