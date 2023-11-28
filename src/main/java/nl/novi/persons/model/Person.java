@@ -30,11 +30,12 @@ public class Person {
         this.age = age;
         this.dob = dob;
         this.gender = gender;
-//        this.id = idCounter++;
+//  this.id = idCounter++;
     }
 
+
+    //default constructor
     public Person() {
-        // default constructor logic, if needed
     }
 
     //getName om veiliger het variabel te pakkn

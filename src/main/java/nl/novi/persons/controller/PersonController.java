@@ -27,7 +27,7 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<List<Person>> getMapPerson() {
-       return ResponseEntity.ok(personRepository.findAll());
+        return ResponseEntity.ok(personRepository.findAll());
 //        return ResponseEntity.ok(personList);
     }
 
@@ -40,8 +40,13 @@ public class PersonController {
                 searchResult.add(person);
             }
         }
-        return ResponseEntity.ok(searchResult);
+        if (!searchResult.isEmpty()) {
+            return ResponseEntity.ok(searchResult);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     @PostMapping
     public ResponseEntity<String> addPerson(@RequestBody Person person) {
