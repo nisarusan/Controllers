@@ -12,6 +12,5 @@ public class ExceptionController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-
     //More Exceptions later hier
 }
