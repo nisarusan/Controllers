@@ -1,28 +1,43 @@
 package nl.novi.persons.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "persons")
 public class Person {
 
+//    private static Long idCounter = 1L;
 
-    private static Long idCounter = 1L;
-
+    @Id
+    @GeneratedValue
+    private Long id;
     //Instance fields
+    @Column
     private String name;
+    @Column
     private int age;
+    @Column
     private LocalDate dob;
     private char gender;
-    private Long id;
 
+
+
+    //constructor objecten bouwer for object instansties
     public Person(String name, int age, LocalDate dob, char gender) {
         this.name = name;
         this.age = age;
         this.dob = dob;
         this.gender = gender;
-        this.id = idCounter++;
+//        this.id = idCounter++;
     }
 
-    //getName
+    public Person() {
+        // default constructor logic, if needed
+    }
+
+    //getName om veiliger het variabel te pakkn
     public String getName() {
         return name;
     }
@@ -67,6 +82,7 @@ public class Person {
         this.gender = gender;
     }
 
+    //setId
     public void setId(Long id) {
         this.id = id;
     }
