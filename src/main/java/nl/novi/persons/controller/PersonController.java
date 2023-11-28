@@ -1,5 +1,6 @@
 package nl.novi.persons.controller;
 
+import nl.novi.persons.expection.RecordNotFoundException;
 import nl.novi.persons.model.Person;
 import nl.novi.persons.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,8 @@ public class PersonController {
 
             return ResponseEntity.ok(existingPerson.getName() + " is updated successfully with: " + updatedPerson.getName());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new RecordNotFoundException("Person not found with id: " + id);
+//            return ResponseEntity.notFound().build();
         }
     }
 
@@ -98,7 +100,8 @@ public class PersonController {
 //                return ResponseEntity.noContent(person.getName() + " with id " + id + " succesfully got deleted");
             }
         }
-        return ResponseEntity.notFound().build();
+        throw new RecordNotFoundException("Didn't found the person");
+//        return ResponseEntity.notFound().build();
     }
 }
 
