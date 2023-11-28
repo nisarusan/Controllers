@@ -1,15 +1,17 @@
 package nl.novi.persons.controller;
 
-
+import nl.novi.persons.expection.RecordNotFoundException;
 import nl.novi.persons.model.Person;
 import nl.novi.persons.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<List<Person>> getMapPerson() {
-       return ResponseEntity.ok(personRepository.findAll());
+        return ResponseEntity.ok(personRepository.findAll());
 //        return ResponseEntity.ok(personList);
     }
 
@@ -40,7 +42,18 @@ public class PersonController {
                 searchResult.add(person);
             }
         }
-        return ResponseEntity.ok(searchResult);
+        if (!searchResult.isEmpty()) {
+            return ResponseEntity.ok(searchResult);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //get ALl dates after search input
+    @GetMapping("/searchByDate")
+    public ResponseEntity<List<Person>> getDateSearch(@RequestParam LocalDate dob) {
+        List<Person> persons = personRepository.findByDobAfter(dob);
+        return ResponseEntity.ok(persons);
     }
 
     @PostMapping
@@ -62,6 +75,9 @@ public class PersonController {
 
             // Update the existing person's information, excluding ID from the request body
             existingPerson.setName(updatedPerson.getName());
+            existingPerson.setAge(updatedPerson.getAge());
+            existingPerson.setDob(updatedPerson.getDob());
+            existingPerson.setGender(updatedPerson.getGender());
             // Update other fields as needed
 
             // Save the updated person to the database
@@ -69,7 +85,8 @@ public class PersonController {
 
             return ResponseEntity.ok(existingPerson.getName() + " is updated successfully with: " + updatedPerson.getName());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new RecordNotFoundException("Person not found with id: " + id);
+//            return ResponseEntity.notFound().build();
         }
     }
 
@@ -83,7 +100,8 @@ public class PersonController {
 //                return ResponseEntity.noContent(person.getName() + " with id " + id + " succesfully got deleted");
             }
         }
-        return ResponseEntity.notFound().build();
+        throw new RecordNotFoundException("Didn't found the person");
+//        return ResponseEntity.notFound().build();
     }
 }
 
